@@ -1,0 +1,22 @@
+# Show colon prefix when in command mode
+set show-mode-in-prompt on
+set vi-ins-mode-string ""
+set vi-cmd-mode-string ":"
+
+# Don't show ^C on C-c keypress
+set echo-control-characters off
+
+set keymap vi-command
+"\C-l": clear-screen
+set keymap vi-insert
+"\C-l": clear-screen
+
+# Use typed text as prefix for up/down search
+"\e[B": history-search-forward
+"\e[A": history-search-backward
+
+# Don't autocomplete hidden files unless typed dot
+set match-hidden-files off
+
+# Show all autocomplete results at once
+set page-completions off

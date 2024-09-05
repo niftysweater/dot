@@ -14,9 +14,6 @@ fi
 
 set -o vi
 
-export PATH="$PATH:/Users/ben/.local/bin"
-alias docker='podman'
-
 export REPOS="$HOME/repos"
 export GHREPOS="$REPOS/github.com"
 export MYREPOS="$GHREPOS/niftysweater"
@@ -24,9 +21,21 @@ export ZET="$MYREPOS/zet"
 export CDPATH=".:$REPOS:$GHREPOS:$MYREPOS:$ZET"
 
 prompt() {
-	export PS1='[\u@\h \W]\$ '
+	# Write and read history
+	history -a && history -n
+
+	export PS1="[\u@\h \W]\$ "
+
+	# Add git branch to prompt if it exists
 	BRANCH="$(git branch --show-current 2>/dev/null)"
 	[ -n "$BRANCH" ] && export PS1="[\u@\h \W]($BRANCH)\$ "
 }
 
 PROMPT_COMMAND="prompt"
+
+# Append to history so different terminals don't overwrite each other
+shopt -s histappend
+# Don't write commands that are consecutive duplicates or begin with space
+HISTCONTROL=ignoreboth
+HISTSIZE=10000
+HISTFILESIZE=20000

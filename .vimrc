@@ -23,3 +23,22 @@ nnoremap j gj
 nnoremap k gk
 vnoremap j gj
 vnoremap k gk
+
+call plug#begin()
+	Plug 'prabirshrestha/vim-lsp'
+	Plug 'mattn/vim-lsp-settings'
+call plug#end()
+
+"autocmd FileType go set signcolumn=yes
+
+let g:lsp_completion_documentation_enabled = 0
+let g:lsp_diagnostics_enabled = 0
+let g:lsp_diagnostics_signs_enabled = 0
+let g:lsp_diagnostics_highlights_enabled = 0
+let g:lsp_document_code_action_signs_enabled = 0
+set backspace=indent,eol,start
+
+set paste
+set omnifunc=lsp#complete
+"set signcolumn=yes
+highlight clear SignColumn

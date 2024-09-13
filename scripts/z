@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+notes=/tmp/notes
+
+list_notes() {
+	notes_info=$(mktemp)
+	echo -e "File Name\tTitle\tTags" >> $notes_info
+
+	find "$ZET" -type f -maxdepth 1 -name "*.md" -exec ls -t {} + | head -n ${1:-10} > $notes
+	cat $notes | while read note; do
+		filename="${note##*/}"
+		title="$(head -n1 "$note" | grep ^# | sed 's/^# //')"
+		tags="$(tail -n1 "$note" | grep "#\S")"
+		echo -e "$filename\t$title\t$tags" >> $notes_info
+	done
+
+	column -t -s $'\t' $notes_info | head -n  1 | nl -b n
+	column -t -s $'\t' $notes_info | tail -n +2 | nl
+}
+
+open_note() {
+	exec vi $(cat $notes | head -n $1 | tail -n 1)
+}
+
+if [ $# -eq 0 ]; then
+	list_notes 10
+	exit 0
+fi
+
+if [ $# -eq 1 ]; then
+	open_note $1
+fi
